@@ -16,9 +16,16 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         console.log('user disconnected');
     });
-    socket.on('chat message', (msg) => {
+    socket.on('chat message', (msg, callback) => {
         console.log('message: ' + msg);
+        // io.emit: 모든 클라이언트에 메시지
+        io.emit('chat message', msg);
+        callback({
+            status: 'success'
+        })
     });
+    // socket.broadcast.emit: 현재 클라이언트를 제외한 나머지에 "hi" 메시지
+    socket.broadcast.emit('hi');
 });
 
 server.listen(3000, () => {
